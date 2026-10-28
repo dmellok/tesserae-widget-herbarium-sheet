@@ -1,0 +1,369 @@
+{
+  "tesserae_compat": "1.x",
+  "tesserae_min": "0.463.0",
+  "name": "Herbarium Sheet",
+  "version": "0.1.0",
+  "kind": "widget",
+  "description": "The plants in flower or fruit around the panel right now, as a herbarium sheet: a few pressed specimens mounted on paper with strips of tape, a small label under each, a printed institutional label and a stamp. From iNaturalist's research-grade plant records near a place or by one user. The records' own photographs, or AI paintings in five styles with a fal.ai key.",
+  "icon": "ph-plant",
+  "category": "art",
+  "supports": {
+    "sizes": [
+      "sm",
+      "md",
+      "lg"
+    ]
+  },
+  "requires": [
+    "network:*"
+  ],
+  "render": {
+    "needs_network": true,
+    "warm_ahead_s": 150
+  },
+  "design": {
+    "palette": "extended"
+  },
+  "cell_options": [
+    {
+      "name": "source",
+      "type": "select",
+      "label": "Source",
+      "default": "place",
+      "help": "Near a place is what people have recorded around the cell's location. A user is one person's own plant observations, anywhere.",
+      "choices": [
+        {
+          "value": "place",
+          "label": "iNaturalist near a place"
+        },
+        {
+          "value": "user",
+          "label": "iNaturalist user"
+        }
+      ]
+    },
+    {
+      "name": "user_login",
+      "type": "string",
+      "label": "iNaturalist username",
+      "default": "",
+      "help": "The username whose plant observations make the sheet. Set it to your own to see what you have pressed.",
+      "show_if": {
+        "source": "user"
+      }
+    },
+    {
+      "name": "location",
+      "type": "location_search",
+      "label": "Place",
+      "default": "",
+      "help": "The place to look around, named on the label and the stamp. Falls back to the app-level location in Settings when empty.",
+      "show_if": {
+        "source": "place"
+      }
+    },
+    {
+      "name": "radius_km",
+      "type": "select",
+      "label": "Within",
+      "default": "10",
+      "help": "How far round the place to look.",
+      "show_if": {
+        "source": "place"
+      },
+      "choices": [
+        {
+          "value": "2",
+          "label": "2 km"
+        },
+        {
+          "value": "5",
+          "label": "5 km"
+        },
+        {
+          "value": "10",
+          "label": "10 km"
+        },
+        {
+          "value": "25",
+          "label": "25 km"
+        },
+        {
+          "value": "50",
+          "label": "50 km"
+        }
+      ]
+    },
+    {
+      "name": "window",
+      "type": "select",
+      "label": "Window",
+      "default": "month",
+      "help": "This month is the current calendar month in any year, so the sheet is seasonal: what flowers here at this time of year. The rolling windows count back from to-day and change as records come in.",
+      "choices": [
+        {
+          "value": "month",
+          "label": "This month"
+        },
+        {
+          "value": "30d",
+          "label": "Last 30 days"
+        },
+        {
+          "value": "90d",
+          "label": "Last 90 days"
+        }
+      ]
+    },
+    {
+      "name": "layout",
+      "type": "select",
+      "label": "Layout",
+      "default": "mounted",
+      "help": "Mounted sets a few specimens side by side or in a grid, each with its label. Single plate shows the most recorded species alone, large, with the label block.",
+      "choices": [
+        {
+          "value": "mounted",
+          "label": "Mounted"
+        },
+        {
+          "value": "plate",
+          "label": "Single plate"
+        }
+      ]
+    },
+    {
+      "name": "count",
+      "type": "select",
+      "label": "How many",
+      "default": "3",
+      "help": "Specimens on the sheet, the most recorded species first. A small cell shows one whatever is set.",
+      "show_if": {
+        "layout": "mounted"
+      },
+      "choices": [
+        {
+          "value": "1",
+          "label": "1"
+        },
+        {
+          "value": "2",
+          "label": "2"
+        },
+        {
+          "value": "3",
+          "label": "3"
+        },
+        {
+          "value": "4",
+          "label": "4"
+        },
+        {
+          "value": "6",
+          "label": "6"
+        }
+      ]
+    },
+    {
+      "name": "pictures",
+      "type": "select",
+      "label": "Pictures",
+      "default": "free",
+      "help": "Photographs cost nothing: each species' iNaturalist photo in a soft oval, credited to its photographer. AI paintings paint each species once, from that photo, in the style below, at about US$0.04 a species; the sheet shows the photograph until each painting lands. Needs a fal.ai key in this widget's settings or under Settings.",
+      "choices": [
+        {
+          "value": "free",
+          "label": "Photographs"
+        },
+        {
+          "value": "gen",
+          "label": "AI paintings"
+        }
+      ]
+    },
+    {
+      "name": "style",
+      "type": "select",
+      "label": "Style",
+      "default": "pressed",
+      "help": "The style every painting is made in. Each style is painted once per species and kept. The cyanotype is a white silhouette on Prussian blue paper, so the picture area goes blue.",
+      "show_if": {
+        "pictures": "gen"
+      },
+      "choices": [
+        {
+          "value": "pressed",
+          "label": "Pressed specimen"
+        },
+        {
+          "value": "redoute",
+          "label": "Watercolour after Redouté"
+        },
+        {
+          "value": "inkwash",
+          "label": "Ink and wash"
+        },
+        {
+          "value": "cyanotype",
+          "label": "Cyanotype after Anna Atkins"
+        },
+        {
+          "value": "woodcut",
+          "label": "Woodcut herbal, 1542"
+        }
+      ]
+    },
+    {
+      "name": "paper",
+      "type": "select",
+      "label": "Paper",
+      "default": "cream",
+      "choices": [
+        {
+          "value": "cream",
+          "label": "Cream"
+        },
+        {
+          "value": "white",
+          "label": "White"
+        },
+        {
+          "value": "aged",
+          "label": "Aged"
+        }
+      ]
+    },
+    {
+      "name": "model",
+      "type": "select",
+      "label": "Model",
+      "default": "nano_banana",
+      "help": "All on fal.ai, all painting from a photo of the species. Nano Banana is faithful and cheap; Nano Banana Pro follows an unusual instruction better and draws finer detail; FLUX.1 Kontext Pro adheres most strongly to a style; GPT Image 2 is a good likeness with a narrower range; Seedream 4 is the budget one. Each model keeps its own paintings, so switching never throws any away.",
+      "show_if": {
+        "pictures": "gen"
+      },
+      "advanced": true,
+      "choices": [
+        {
+          "value": "nano_banana",
+          "label": "Nano Banana (about US$0.04)"
+        },
+        {
+          "value": "nano_banana_pro",
+          "label": "Nano Banana Pro (about US$0.15)"
+        },
+        {
+          "value": "flux_kontext",
+          "label": "FLUX.1 Kontext Pro (about US$0.04)"
+        },
+        {
+          "value": "gpt_image",
+          "label": "GPT Image 2 (about US$0.05)"
+        },
+        {
+          "value": "seedream",
+          "label": "Seedream 4 (about US$0.03)"
+        }
+      ]
+    },
+    {
+      "name": "panel",
+      "type": "select",
+      "label": "Panel",
+      "default": "colour",
+      "help": "What the panel can show. Paintings are converted and contrast-stretched to match; photographs are shown in grey; on black and white the type is thickened.",
+      "advanced": true,
+      "choices": [
+        {
+          "value": "colour",
+          "label": "Colour"
+        },
+        {
+          "value": "gray16",
+          "label": "16 greys"
+        },
+        {
+          "value": "gray4",
+          "label": "4 greys"
+        },
+        {
+          "value": "mono",
+          "label": "Black and white"
+        }
+      ]
+    },
+    {
+      "name": "title",
+      "type": "string",
+      "label": "Title",
+      "default": "",
+      "help": "The first word on the label block. Blank is HERBARIUM.",
+      "advanced": true
+    },
+    {
+      "name": "credits",
+      "type": "boolean",
+      "label": "Credits at the foot",
+      "default": true,
+      "help": "The photographers, their licences and the painter, in small type at the foot of the sheet. Photographs are also credited on the iNaturalist record.",
+      "advanced": true
+    }
+  ],
+  "settings": [
+    {
+      "name": "fal_api_key",
+      "type": "string",
+      "label": "fal.ai API key (AI paintings)",
+      "secret": true,
+      "default": "",
+      "help": "With a key the widget can paint each species from its own photograph, at about US$0.04 a painting, once per species and style. Get one at https://fal.ai/dashboard/keys; it is only sent to fal.run. Without one the widget shows photographs."
+    },
+    {
+      "name": "gen_daily_usd",
+      "type": "slider",
+      "label": "Painting budget per day",
+      "default": 2,
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "unit": "US$",
+      "help": "The most the widget may spend on new paintings in a day, at the models' listed prices (US$2 is about fifty Nano Banana paintings). 0 is no limit. Paintings are kept, so a species in a style only costs once; after a few weeks most of what flowers is already painted."
+    },
+    {
+      "name": "gen_per_refresh",
+      "type": "number",
+      "label": "New paintings started per preview",
+      "default": 3,
+      "help": "How many new paintings one settled preview in the editor may start (1 to 50). A panel's own render starts what its page needs, within the daily number."
+    }
+  ],
+  "data_schema": {
+    "fields": [
+      {
+        "name": "head",
+        "type": "str",
+        "label": "Place or user"
+      },
+      {
+        "name": "month",
+        "type": "str",
+        "label": "Month"
+      },
+      {
+        "name": "accession",
+        "type": "str",
+        "label": "Accession number"
+      },
+      {
+        "name": "species_total",
+        "type": "num",
+        "label": "Species recorded"
+      },
+      {
+        "name": "species",
+        "type": "arr",
+        "label": "Specimens"
+      }
+    ]
+  }
+}

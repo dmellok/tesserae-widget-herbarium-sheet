@@ -1,0 +1,223 @@
+/* Herbarium Sheet. The page is the cell: paper edge to edge. Literal paper
+   tints (the paper option), a dark ink, beige tape and a blue stamp ink; the
+   manifest declares the extended palette for them. Type scales from cqmin
+   with a floor near 11 px at md; structure changes by size class. */
+
+:host { display: block; height: 100%; }
+
+.hs {
+  container-type: size;
+  height: 100%; width: 100%; box-sizing: border-box;
+  position: relative; overflow: hidden;
+  display: flex; flex-direction: column;
+  background: var(--paper, #f3ead6);
+  --ink: #2a2116;
+  --ink-soft: #5c5244;
+  --tape: rgba(222, 198, 150, 0.6);
+  --tape-edge: rgba(255, 255, 255, 0.35);
+  --stamp: #3a5f8a;
+  --slip: rgba(255, 255, 255, 0.72);
+  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  color: var(--ink);
+  font-family: var(--font-family, inherit);
+  font-variant-numeric: tabular-nums;
+  padding: 3cqmin 3.4cqmin 2.2cqmin;
+}
+.lv-gray16, .lv-gray4, .lv-mono { --ink: #000; --ink-soft: #222; --stamp: #000; }
+.lv-gray4, .lv-mono { --tape: rgba(0, 0, 0, 0.16); --tape-edge: rgba(0, 0, 0, 0.1); --slip: rgba(255, 255, 255, 0.9); }
+.lv-mono .slip, .lv-mono .block { -webkit-text-stroke: 0.25px currentColor; }
+
+/* ---- the mounts ------------------------------------------------------- */
+
+.mount {
+  flex: 1 1 auto; min-height: 0;
+  display: grid; gap: 1.5cqmin 2.5cqmin;
+  grid-auto-rows: minmax(0, 1fr);
+  align-items: stretch;
+}
+.n1 .mount { --cols: 1; grid-template-columns: 1fr; }
+.n2 .mount { --cols: 2; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.n3 .mount { --cols: 3; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.n4 .mount { --cols: 4; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.n6 .mount { --cols: 3; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+.spec {
+  margin: 0; min-height: 0; min-width: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 1.2cqmin;
+}
+/* the picture's room: the rest of the column, but never taller than a 3:4
+   box as wide as the column needs, so a wide cell centres the specimen and
+   its slip rather than leaving a blank band above them */
+.pic {
+  flex: 1 1 auto; min-height: 0; width: 100%;
+  max-height: calc((100cqw - 6.8cqmin - (var(--cols, 1) - 1) * 2.5cqmin) / var(--cols, 1) * 4 / 3);
+  container-type: size;
+  display: flex; align-items: flex-end; justify-content: center;
+}
+/* a 3:4 box as tall as the room allows, never wider than its column; it sits
+   at the foot of its room so the slip stays close under it */
+.pic-box {
+  position: relative;
+  width: min(100%, 75cqh);
+  aspect-ratio: 3 / 4;
+}
+.pic-box img {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; display: block;
+}
+.pic-box.oval img {
+  -webkit-mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 64%, transparent 78%);
+  mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 64%, transparent 78%);
+}
+/* a painting on white paper: multiplied, its white becomes the page */
+.pic-box.paint img { mix-blend-mode: multiply; }
+.pic-box.blue { background: var(--blue, #1d3a6b); }
+.pic-box.blue img { mix-blend-mode: normal; object-fit: contain; }
+.pic-box.none { outline: 2px dashed var(--ink); outline-offset: -2px; opacity: 0.35; border-radius: 50% / 50%; }
+.lv-gray16 .oval img, .lv-gray4 .oval img { filter: grayscale(1) contrast(1.12); }
+.lv-mono .oval img { filter: grayscale(1) contrast(1.45) brightness(1.05); }
+
+/* gummed tape across the stem near the top and the bottom */
+.tape {
+  position: absolute; left: 50%; width: 44%; height: 7.5%;
+  background: var(--tape);
+  box-shadow: inset 0 0 0 1px var(--tape-edge);
+  transform: translateX(-50%) rotate(-3deg);
+}
+.tape-t { top: 14%; }
+.tape-b { bottom: 15%; transform: translateX(-50%) rotate(2.5deg); }
+.pic-box.alt .tape-t { transform: translateX(-46%) rotate(3.5deg); }
+.pic-box.alt .tape-b { transform: translateX(-54%) rotate(-2deg); }
+
+/* the label slip */
+.slip {
+  flex: 0 0 auto; max-width: 100%;
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  background: var(--slip);
+  padding: 0.9cqmin 2.2cqmin 1cqmin;
+  box-shadow: 0 0 0 1px rgba(42, 33, 22, 0.18);
+  transform: rotate(-1.2deg);
+  line-height: 1.22;
+}
+.spec:nth-child(even) .slip { transform: rotate(1deg); }
+.nm {
+  font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase;
+  font-size: clamp(12px, 2.2cqmin, 26px);
+  max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.sci {
+  font-family: var(--serif); font-style: italic; font-weight: 500;
+  font-size: clamp(12px, 2.3cqmin, 27px);
+  max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.meta {
+  font-weight: 600; color: var(--ink-soft); letter-spacing: 0.04em;
+  font-size: clamp(11px, 1.6cqmin, 18px); margin-top: 0.25em;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;
+}
+.pend { font-style: italic; font-weight: 500; margin-left: 0.6em; opacity: 0.7; }
+.n4 .meta, .n6 .meta { font-size: clamp(11px, 1.45cqmin, 16px); }
+.n6 .nm { font-size: clamp(11px, 1.9cqmin, 22px); }
+.n6 .sci { font-size: clamp(11px, 2cqmin, 23px); }
+
+/* ---- the foot: credits, stamp and label block ------------------------- */
+
+.foot {
+  flex: 0 0 auto;
+  display: flex; align-items: flex-end; justify-content: space-between; gap: 3cqmin;
+  margin-top: 1.6cqmin;
+}
+.credits {
+  flex: 1 1 auto; min-width: 0; align-self: flex-end;
+  font-family: var(--serif); font-style: italic; color: var(--ink-soft);
+  font-size: clamp(11px, 1.45cqmin, 15px); line-height: 1.3;
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden;
+  padding-bottom: 0.3cqmin;
+}
+.seal { flex: 0 0 auto; display: flex; align-items: center; }
+.stamp {
+  width: clamp(54px, 16cqmin, 150px); height: clamp(54px, 16cqmin, 150px);
+  color: var(--stamp); opacity: 0.82; mix-blend-mode: multiply;
+  transform: rotate(-11deg);
+  margin-right: -1.4cqmin; position: relative; z-index: 1;
+  font-family: var(--font-family, inherit); font-weight: 800; letter-spacing: 0.18em;
+}
+.stamp-t { fill: currentColor; }
+.block {
+  border: 2px solid var(--ink);
+  padding: 0.9cqmin 2cqmin 1.1cqmin 2.4cqmin;
+  background: var(--paper);
+  font-family: var(--serif); line-height: 1.32;
+  font-size: clamp(11px, 1.9cqmin, 19px);
+  max-width: 46cqw; min-width: 0;
+}
+.b1 {
+  font-family: var(--font-family, inherit); font-weight: 900; letter-spacing: 0.07em; text-transform: uppercase;
+  font-size: clamp(12px, 2.1cqmin, 21px);
+  border-bottom: 2px solid var(--ink); margin: 0 -2cqmin 0.35em -2.4cqmin; padding: 0 2cqmin 0.3em 2.4cqmin;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.bl { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* ---- single plate ----------------------------------------------------- */
+
+.lay-plate .mount { grid-template-columns: 1fr; }
+.lay-plate .spec { flex-direction: row; align-items: center; justify-content: center; gap: 4cqmin; }
+.lay-plate .pic { flex: 1 1 auto; height: 100%; max-height: none; align-items: center; }
+.lay-plate .pic-box { width: min(100%, 75cqh); }
+.lay-plate .slip { flex: 0 0 34cqw; align-items: flex-start; text-align: left; padding: 1.6cqmin 3cqmin 1.8cqmin; transform: rotate(0.8deg); }
+.lay-plate .nm { font-size: clamp(14px, 3.2cqmin, 40px); white-space: normal; }
+.lay-plate .sci { font-size: clamp(14px, 3.4cqmin, 42px); white-space: normal; }
+.lay-plate .meta { font-size: clamp(11px, 2cqmin, 22px); margin-top: 0.5em; }
+
+/* ---- portrait and tall cells ------------------------------------------ */
+
+@container (max-aspect-ratio: 1 / 1) {
+  .n3 .mount { --cols: 2; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .n3 .spec:nth-child(3) { grid-column: 1 / -1; }
+  .n4 .mount { --cols: 2; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .n6 .mount { --cols: 2; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .lay-plate .spec { flex-direction: column; gap: 1.6cqmin; }
+  .lay-plate .pic { width: 100%; height: auto; flex: 1 1 auto; }
+  .lay-plate .pic-box { width: min(100%, 75cqh); }
+  .lay-plate .slip { flex: 0 0 auto; align-items: center; text-align: center; max-width: 86%; }
+  .block { max-width: 60cqw; }
+  .credits { -webkit-line-clamp: 2; }
+}
+
+/* ---- empty and error -------------------------------------------------- */
+
+.empty {
+  grid-column: 1 / -1; align-self: center; justify-self: center;
+  display: flex; flex-direction: column; align-items: center; text-align: center; gap: 1.4cqmin;
+  max-width: 70%;
+}
+.empty-ring {
+  width: 22cqmin; height: 29cqmin; border: 2px dashed var(--ink); border-radius: 50%; opacity: 0.35;
+}
+.empty-t { font-family: var(--serif); font-size: clamp(14px, 3.4cqmin, 34px); line-height: 1.2; }
+.empty-s { font-weight: 600; color: var(--ink-soft); font-size: clamp(11px, 1.7cqmin, 16px); letter-spacing: 0.04em; }
+
+.err {
+  flex: 1 1 auto; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 2cqmin; text-align: center; padding: 4cqmin 8cqmin;
+}
+.err i { font-size: clamp(28px, 12cqmin, 96px); color: var(--ink); }
+.err-t { font-family: var(--serif); font-size: clamp(13px, 3.2cqmin, 30px); line-height: 1.25; }
+
+/* ---- sm: one specimen, a two-line label ------------------------------- */
+
+.size-sm { padding: 3cqmin 3.5cqmin; }
+.size-sm .mount { display: flex; gap: 0; }
+.size-sm .spec { flex-direction: row; align-items: center; gap: 4cqmin; width: 100%; height: 100%; }
+.size-sm .pic { flex: 0 0 auto; height: 100%; max-height: none; width: calc((100cqh - 6cqmin) * 0.75); align-items: center; }
+.size-sm .pic-box { width: 100%; }
+.size-sm .slip { flex: 1 1 auto; min-width: 0; align-items: flex-start; text-align: left; padding: 2cqmin 3.5cqmin 2.4cqmin; transform: rotate(-1.5deg); gap: 0.15em; }
+.size-sm .nm { font-size: clamp(13px, 5.6cqmin, 20px); white-space: normal; letter-spacing: 0.05em; line-height: 1.15; }
+.size-sm .sci { font-size: clamp(13px, 6cqmin, 22px); white-space: normal; }
+.size-sm .meta, .size-sm .foot { display: none; }
+.size-sm .empty { max-width: 90%; }
+.size-sm .empty-ring { display: none; }
+.size-sm .empty-t { font-size: clamp(14px, 6cqmin, 22px); }
+.size-sm .empty-s { font-size: 11px; }
