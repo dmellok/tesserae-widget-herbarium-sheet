@@ -21,7 +21,7 @@
   color: var(--ink);
   font-family: var(--font-family, inherit);
   font-variant-numeric: tabular-nums;
-  padding: 3cqmin 3.4cqmin 2.2cqmin;
+  padding: 2.4cqmin 2.4cqmin 2cqmin;
 }
 .lv-gray16, .lv-gray4, .lv-mono { --ink: #000; --ink-soft: #222; --stamp: #000; }
 .lv-gray4, .lv-mono { --tape: rgba(0, 0, 0, 0.16); --tape-edge: rgba(0, 0, 0, 0.1); --slip: rgba(255, 255, 255, 0.9); }
@@ -31,7 +31,7 @@
 
 .mount {
   flex: 1 1 auto; min-height: 0;
-  display: grid; gap: 1.5cqmin 2.5cqmin;
+  display: grid; gap: 1cqmin 1.4cqmin;
   grid-auto-rows: minmax(0, 1fr);
   align-items: stretch;
 }
@@ -44,14 +44,14 @@
 .spec {
   margin: 0; min-height: 0; min-width: 0;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: 1.2cqmin;
+  gap: 0.5cqmin;
 }
 /* the picture's room: the rest of the column, but never taller than a 3:4
    box as wide as the column needs, so a wide cell centres the specimen and
    its slip rather than leaving a blank band above them */
 .pic {
   flex: 1 1 auto; min-height: 0; width: 100%;
-  max-height: calc((100cqw - 6.8cqmin - (var(--cols, 1) - 1) * 2.5cqmin) / var(--cols, 1) * 4 / 3);
+  max-height: calc((100cqw - 4.8cqmin - (var(--cols, 1) - 1) * 1.4cqmin) / var(--cols, 1) * 4 / 3);
   container-type: size;
   display: flex; align-items: flex-end; justify-content: center;
 }
@@ -126,7 +126,7 @@
 .foot {
   flex: 0 0 auto;
   display: flex; align-items: flex-end; justify-content: space-between; gap: 3cqmin;
-  margin-top: 1.6cqmin;
+  margin-top: 0.8cqmin;
 }
 .credits {
   flex: 1 1 auto; min-width: 0; align-self: flex-end;
@@ -163,13 +163,17 @@
 /* ---- single plate ----------------------------------------------------- */
 
 .lay-plate .mount { grid-template-columns: 1fr; }
-.lay-plate .spec { flex-direction: row; align-items: center; justify-content: center; gap: 4cqmin; }
-.lay-plate .pic { flex: 1 1 auto; height: 100%; max-height: none; align-items: center; }
+.lay-plate .spec { flex-direction: row; align-items: center; justify-content: flex-start; gap: 3cqmin; }
+.lay-plate .pic { flex: 0 0 auto; width: 55cqw; height: 100%; max-height: none; align-items: center; justify-content: center; }
 .lay-plate .pic-box { width: min(100%, 75cqh); }
-.lay-plate .slip { flex: 0 0 34cqw; align-items: flex-start; text-align: left; padding: 1.6cqmin 3cqmin 1.8cqmin; transform: rotate(0.8deg); }
+.lay-plate .slip { flex: 0 1 auto; min-width: 0; max-width: 36cqw; align-self: flex-start; margin-top: 10cqh; align-items: flex-start; text-align: left; padding: 1.6cqmin 3cqmin 1.8cqmin; transform: rotate(0.8deg); }
 .lay-plate .nm { font-size: clamp(14px, 3.2cqmin, 40px); white-space: normal; }
 .lay-plate .sci { font-size: clamp(14px, 3.4cqmin, 42px); white-space: normal; }
 .lay-plate .meta { font-size: clamp(11px, 2cqmin, 22px); margin-top: 0.5em; }
+/* landscape: the label block and the stamp sit over the page's corner, so the
+   specimen takes about nine tenths of the height */
+.lay-plate .foot { position: absolute; left: 2.4cqmin; right: 2.4cqmin; bottom: 2cqmin; margin: 0; }
+.lay-plate .credits { max-width: 50%; }
 
 /* ---- portrait and tall cells ------------------------------------------ */
 
@@ -178,10 +182,12 @@
   .n3 .spec:nth-child(3) { grid-column: 1 / -1; }
   .n4 .mount { --cols: 2; grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .n6 .mount { --cols: 2; grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .lay-plate .spec { flex-direction: column; gap: 1.6cqmin; }
+  .lay-plate .spec { flex-direction: column; justify-content: center; gap: 1.2cqmin; }
   .lay-plate .pic { width: 100%; height: auto; flex: 1 1 auto; }
   .lay-plate .pic-box { width: min(100%, 75cqh); }
-  .lay-plate .slip { flex: 0 0 auto; align-items: center; text-align: center; max-width: 86%; }
+  .lay-plate .slip { flex: 0 0 auto; align-self: center; margin-top: 0; align-items: center; text-align: center; max-width: 86%; }
+  .lay-plate .foot { position: static; margin-top: 0.8cqmin; }
+  .lay-plate .credits { max-width: none; }
   .block { max-width: 60cqw; }
   .credits { -webkit-line-clamp: 2; }
 }
