@@ -23,7 +23,9 @@ TIMEOUT_S = 15
 API = "https://api.inaturalist.org/v1"
 SPECIES_COUNTS = f"{API}/observations/species_counts"
 OBSERVATIONS = f"{API}/observations"
-LICENSED = "cc0,cc-by,cc-by-nc,cc-by-sa,cc-by-nc-sa,cc-by-nd,cc-by-nc-nd"
+# No NoDerivatives licences: an AI painting made from a photo is a derivative
+# work, which CC BY-ND and CC BY-NC-ND forbid, so those photos are left out.
+LICENSED = "cc0,cc-by,cc-by-sa,cc-by-nc,cc-by-nc-sa"
 WINDOWS = ("month", "30d", "90d")
 MAX_SPECIES = 6
 SPECIES_PER_PAGE = 20

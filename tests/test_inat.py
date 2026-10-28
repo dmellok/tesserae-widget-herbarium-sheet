@@ -15,7 +15,8 @@ def test_query_windows(server):
     q = INAT.base_query((-37.81, 144.96), 10, "", "month", TODAY)
     assert q["month"] == "10" and "d1" not in q
     assert q["iconic_taxa"] == "Plantae" and q["quality_grade"] == "research"
-    assert q["photo_license"] == INAT.LICENSED and q["radius"] == "10"
+    assert q["photo_license"] == "cc0,cc-by,cc-by-sa,cc-by-nc,cc-by-nc-sa"
+    assert "nd" not in q["photo_license"] and q["radius"] == "10"
     q30 = INAT.base_query((-37.81, 144.96), 10, "", "30d", TODAY)
     assert q30["d1"] == "2026-09-28" and "month" not in q30
     q90 = INAT.base_query(None, 10, "someone", "90d", TODAY)

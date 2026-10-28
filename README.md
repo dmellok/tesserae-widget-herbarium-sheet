@@ -14,7 +14,10 @@ paintings in the Pressed specimen style on cream paper (1200x800).*
 
 [iNaturalist](https://www.inaturalist.org): research-grade observations of
 plants (`iconic_taxa=Plantae`) that carry a photo under a Creative Commons
-licence, near a place or by one user. The widget asks for the species counts
+licence that allows derivative works (CC0, CC BY, CC BY-SA, CC BY-NC or
+CC BY-NC-SA), near a place or by one user. Photos under CC BY-ND or
+CC BY-NC-ND are left out of both calls, because an AI painting made from a
+photo is a derivative work and those licences forbid one. The widget asks for the species counts
 in the window, takes the most recorded few, and for each fetches its newest
 record with a licensed photo: that gives the date on the label, the
 photograph, and the photographer and licence for the credit.
@@ -166,8 +169,8 @@ each, resized copies, the day's spend and the queue), all managed by
 
 AGPL-3.0. See [LICENSE](LICENSE). Observation data and photographs are
 iNaturalist's observers' own, under the Creative Commons licence each chose
-(CC0, CC BY, CC BY-NC, CC BY-SA, CC BY-NC-SA, CC BY-ND or CC BY-NC-ND), and
-are credited on the sheet by name and licence; a painting made from a photo
+(CC0, CC BY, CC BY-SA, CC BY-NC or CC BY-NC-SA; NoDerivatives licences are
+not used), and are credited on the sheet by name and licence; a painting made from a photo
 is a derivative of it, and the credit says so. The paintings in the
 screenshots were made with Nano Banana on fal.ai from photographs by Audrey
 Fukuhara (CC BY-NC), pvesk (CC BY-NC), lbistritz (CC BY), joegreezy (CC
