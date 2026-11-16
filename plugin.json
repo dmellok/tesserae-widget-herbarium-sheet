@@ -1,7 +1,7 @@
 {
   "tesserae_compat": "1.x",
   "tesserae_min": "0.463.0",
-  "name": "Herbarium Sheet",
+  "name": "Picture, Herbarium Sheet",
   "version": "0.1.0",
   "kind": "widget",
   "description": "The plants in flower or fruit around the panel right now, as a herbarium sheet: a few pressed specimens mounted on paper with strips of tape, a small label under each, a printed institutional label and a stamp. From iNaturalist's research-grade plant records near a place or by one user. The records' own photographs, or AI paintings in five styles with a fal.ai key.",
