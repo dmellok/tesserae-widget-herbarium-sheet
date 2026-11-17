@@ -35,7 +35,7 @@ def _up_front(o: dict) -> bool:
 
 
 def test_manifest_basics() -> None:
-    assert MANIFEST["name"] == "Herbarium Sheet"
+    assert MANIFEST["name"] == "Picture, Herbarium Sheet"
     assert MANIFEST["icon"] == "ph-plant" and MANIFEST["category"] == "art"
     assert MANIFEST["requires"] == ["network:*"]
     assert (
